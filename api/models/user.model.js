@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    avatar: {
+        type: String,
+        default: "https://tse1.mm.bing.net/th?q=instagram%20blank%20pfp"
+    },
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
