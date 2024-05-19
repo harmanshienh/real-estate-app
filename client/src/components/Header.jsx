@@ -20,16 +20,19 @@ export default function Header() {
                         placeholder='Search'
                         className='bg-transparent focus:outline-none w-24 sm:w-64' />
                 </form>
-                <ul className='flex gap-4'>
+                <ul className='flex gap-4 items-center'>
                     <Link to='/'>
                         <li className='hidden sm:inline text-slate-700 hover:underline cursor-pointer'>Home</li>
                     </Link>
                     <Link to='/about'>
                         <li className='hidden sm:inline text-slate-700 hover:underline cursor-pointer'>About</li>
                     </Link>
+                    {currentUser ? <Link to='/create-listing'>
+                        <li className="bg-red-700 text-white p-2 rounded-lg font-semibold text-center hover:opacity-95">Create Listing</li>
+                    </Link>:""}
                     <Link to='/profile'>
                         {currentUser ? (<img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='Profile'/>): 
-                        <Link to="/sign-in"><li className=" text-slate-700 hover:underline"> Sign in</li></Link>}
+                        <Link to="/sign-in"><li className=" text-slate-700 hover:underline">Sign in</li></Link>}
                     </Link>
                 </ul>
             </div>
