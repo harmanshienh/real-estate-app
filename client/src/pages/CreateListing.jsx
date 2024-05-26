@@ -106,8 +106,8 @@ export default function CreateListing() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (formData.imageURLs.length < 1) {
-                return setError('You must upload at least 1 image');
+            if (formData.imageURLs.length < 2) {
+                return setError('You must upload at least 2 images');
             }
             setSubmitLoading(true);
             setError(false);
@@ -176,8 +176,8 @@ export default function CreateListing() {
                         <div className='flex items-center gap-2 w-full'>
                             <input type='number' id='regularPrice' min='1' max='10000' required className='p-3 border border-gray-300 rounded-lg flex-grow max-w-20' onChange={handleChange} value={formData.regularPrice} />
                             <div className='flex flex-col items-center'>
-                                <span>Regular Price</span>
-                                <span className='text-xs'>($ / month)</span>
+                                <span>Price</span>
+                                {formData.type === 'rent' && (<span className='text-xs'>($ / month)</span>)}
                             </div>
                         </div>
                     </div>

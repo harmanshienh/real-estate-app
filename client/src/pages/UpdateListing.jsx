@@ -194,8 +194,8 @@ export default function UpdateListing() {
                         <div className='flex items-center gap-2 w-full'>
                             <input type='number' id='regularPrice' min='1' max='10000' required className='p-3 border border-gray-300 rounded-lg flex-grow max-w-20' onChange={handleChange} value={formData.regularPrice} />
                             <div className='flex flex-col items-center'>
-                                <span>Regular Price</span>
-                                <span className='text-xs'>($ / month)</span>
+                                <span>Price</span>
+                                {formData.type === 'rent' && (<span className='text-xs'>($ / month)</span>)}
                             </div>
                         </div>
                     </div>
@@ -221,7 +221,7 @@ export default function UpdateListing() {
                             </div>
                         ))
                     }
-                    <button disabled={submitLoading || uploading} className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>{submitLoading ? 'Creating...' : 'Update Listing'}</button>
+                    <button disabled={submitLoading || uploading} className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>{submitLoading ? 'Updating...' : 'Update Listing'}</button>
                     {error && <p className='text-red-700 text-sm'>{error}</p>}
                 </div>
             </form>
