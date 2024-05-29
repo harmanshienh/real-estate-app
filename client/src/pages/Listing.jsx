@@ -96,7 +96,7 @@ export default function Listing() {
                         <ul className='flex flex-wrap items-center gap-4 sm:gap-6 text-green-900 font-semibold text-sm'>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
                                 <FaBed className='text-lg' /> 
-                                {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : `${listing.bedrooms} Bed}`}
+                                {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : `${listing.bedrooms} Bed`}
                             </li>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
                                 <FaBath className='text-lg' /> 

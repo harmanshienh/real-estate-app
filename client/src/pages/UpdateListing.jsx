@@ -192,7 +192,7 @@ export default function UpdateListing() {
                             <span>Baths</span>
                         </div>
                         <div className='flex items-center gap-2 w-full'>
-                            <input type='number' id='regularPrice' min='1' max='10000' required className='p-3 border border-gray-300 rounded-lg flex-grow max-w-20' onChange={handleChange} value={formData.regularPrice} />
+                            <input type='number' id='regularPrice' min='1' max='10000000' required className='p-3 border border-gray-300 rounded-lg max-w-25' onChange={handleChange} value={formData.regularPrice} />
                             <div className='flex flex-col items-center'>
                                 <span>Price</span>
                                 {formData.type === 'rent' && (<span className='text-xs'>($ / month)</span>)}
