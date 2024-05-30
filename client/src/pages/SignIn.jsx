@@ -4,9 +4,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { signInStart, signInSuccess, signInFailure } from '../redux/user/userSlice'
 import OAuth from '../components/OAuth'
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa6";
+
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+
   const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,18 +41,28 @@ export default function SignIn() {
       dispatch(signInSuccess(data));
       navigate('/');
     } catch (error) {
-        dispatch(signInFailure(error.message));
+      dispatch(signInFailure(error.message));
     }
-  
+
   }
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign In</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <input type='email' placeholder='Email Address' className='border p-3 rounded-lg' id='email' onChange={handleChange} />
-        <input type='password' placeholder='Password' className='border p-3 rounded-lg' id='password' onChange={handleChange} />
+        <input type='text' placeholder='Username or Email Address' className='border p-3 rounded-lg' id='emailOrUsername' onChange={handleChange} />
+        <div className='relative group'>
+          <input type={showPassword ? 'text' : 'password'} placeholder='Password' className='border p-3 rounded-lg w-full' id='password' onChange={handleChange} />
+          <div onClick={() => (setShowPassword(!showPassword))} className='absolute right-3 top-1/3'>
+            {showPassword ?
+              <FaEyeSlash className='text-xl
+           text-slate-600 cursor-pointer'/> :
+              <FaEye className='text-xl
+          text-slate-600 cursor-pointer'/>
+            }
+          </div>
+        </div>
         <button disabled={loading} className='bg-yellow-500 text-white p-3 rounded-lg uppercase hover:opacity-95'>{loading ? 'Loading...' : 'Sign In'}</button>
-        <OAuth/>
+        <OAuth />
       </form>
       <div className='flex gap-2 mt-5'>
         <p>Don't have an account?</p>

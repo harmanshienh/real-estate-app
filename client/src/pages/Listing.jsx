@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { useSelector } from 'react-redux'
@@ -10,7 +10,6 @@ import {
     FaBath,
     FaBed,
     FaChair,
-    FaMapMarkedAlt,
     FaMapMarkerAlt,
     FaParking,
     FaShare,
@@ -20,13 +19,37 @@ import Contact from '../components/Contact'
 
 export default function Listing() {
     SwiperCore.use([Navigation, EffectFade, Pagination, Autoplay]);
+
     const [listing, setListing] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [copied, setCopied] = useState(false);
     const [contact, setContact] = useState(false);
+
     const params = useParams();
+    const navigate = useNavigate();
+
     const {currentUser} = useSelector((state) => state.user);
+
+    const handleDeleteListing = async (listingId) => {
+        try {
+          const res = await fetch(`/api/listing/delete/${listingId}`, {
+            method: 'DELETE'
+          });
+    
+          const data = await res.json();
+    
+          if (data.success === false) {
+            console.log(data.message);
+            return;
+          }
+
+          navigate('/profile');
+    
+        } catch (error) {
+          console.log(error);
+        }
+      }
 
     useEffect(() => {
         const fetchListing = async () => {
@@ -77,13 +100,26 @@ export default function Listing() {
                             }} />
                     </div>
                     {copied && (<p className='fixed top-[20%] right-[2.5%] z-10 rounded-md bg-slate-100 p-2'>Copied!</p>)}
+                    <div className='flex flex-col gap-4 fixed top-[10%] left-[2%] z-10'>
+                        <Link to={`/update-listing/${listing._id}`} className='rounded-lg bg-green-700 p-3 text-white font-semibold'>
+                            Update
+                        </Link>
+                        <button onClick={() => handleDeleteListing(listing._id)} className='rounded-lg bg-red-700 p-3 text-white font-semibold'>
+                            Delete
+                        </button>
+                    </div>
                     <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
                         <p className='text-2xl font-semibold'>
                             {listing.name} - ${' '}
                             {listing.regularPrice.toLocaleString('en-US')}
                             {listing.type === 'rent' && ' / month'}
                         </p>
-                        <p className='flex items-center mt-6 gap-2 text-slate-600 text-sm'>
+                        <p className='uppercase text-xs'>
+                            Posted on {new Date(listing.createdAt).
+                            toLocaleString('en-US', { day: 'numeric', 
+                            month: 'long', year: 'numeric' })}
+                        </p>
+                        <p className='flex items-center gap-2 text-slate-600 text-sm'>
                             <FaMapMarkerAlt className='text-green-700' />
                             {listing.address}
                         </p>

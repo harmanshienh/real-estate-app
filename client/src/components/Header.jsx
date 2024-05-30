@@ -4,8 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function Header() {
-    const {currentUser} = useSelector(state => state.user);
+    const { currentUser } = useSelector(state => state.user);
     const [searchTerm, setSearchTerm] = useState('');
+    const [showHeader, setShowHeader] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -16,6 +19,27 @@ export default function Header() {
         navigate(`/search?${searchQuery}`);
     }
 
+    const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY) {
+            setShowHeader(false);
+        }
+        else {
+            setShowHeader(true);
+        }
+
+        setLastScrollY(currentScrollY);
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [lastScrollY]);
+
     useEffect(() => {
         const urlParams = new URLSearchParams(location.search);
         const urlSearchTerm = urlParams.get('searchTerm');
@@ -25,7 +49,7 @@ export default function Header() {
     }, [location.search])
 
     return (
-        <header className='bg-yellow-500 shadow-md'>
+        <header className={`sticky top-0 z-50 w-full bg-yellow-500 shadow-md transition-transform duration-300 ${showHeader ? 'translate-y-0' : '-translate-y-full'}`}>
             <div className='flex justify-between items-center max-w-6xl mx-auto p-3'>
                 <Link to='/'>
                     <h1 className='font-bold text-sm sm:text-xl flex flex-wrap'>
@@ -53,10 +77,10 @@ export default function Header() {
                     </Link>
                     {currentUser ? <Link to='/create-listing'>
                         <li className="bg-red-700 text-white p-2 rounded-lg font-semibold text-center hover:opacity-95">Create Listing</li>
-                    </Link>:""}
+                    </Link> : ""}
                     <Link to='/profile'>
-                        {currentUser ? (<img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='Profile'/>): 
-                        <Link to="/sign-in"><li className=" text-slate-700 hover:underline">Sign in</li></Link>}
+                        {currentUser ? (<img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='Profile' />) :
+                            <Link to="/sign-in"><li className=" text-slate-700 hover:underline">Sign in</li></Link>}
                     </Link>
                 </ul>
             </div>
