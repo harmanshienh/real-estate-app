@@ -16,7 +16,6 @@ import {
 } from 'react-icons/fa';
 import Contact from '../components/Contact'
 
-
 export default function Listing() {
     SwiperCore.use([Navigation, EffectFade, Pagination, Autoplay]);
 
@@ -25,31 +24,34 @@ export default function Listing() {
     const [error, setError] = useState(false);
     const [copied, setCopied] = useState(false);
     const [contact, setContact] = useState(false);
+    const [profilePicture, setProfilePicture] = useState(null);
+    const [name, setName] = useState(null);
+    const [userCreated, setUserCreated] = useState(null);
 
     const params = useParams();
     const navigate = useNavigate();
 
-    const {currentUser} = useSelector((state) => state.user);
+    const { currentUser } = useSelector((state) => state.user);
 
     const handleDeleteListing = async (listingId) => {
         try {
-          const res = await fetch(`/api/listing/delete/${listingId}`, {
-            method: 'DELETE'
-          });
-    
-          const data = await res.json();
-    
-          if (data.success === false) {
-            console.log(data.message);
-            return;
-          }
+            const res = await fetch(`/api/listing/delete/${listingId}`, {
+                method: 'DELETE'
+            });
 
-          navigate('/profile');
-    
+            const data = await res.json();
+
+            if (data.success === false) {
+                console.log(data.message);
+                return;
+            }
+
+            navigate('/profile');
+
         } catch (error) {
-          console.log(error);
+            console.log(error);
         }
-      }
+    }
 
     useEffect(() => {
         const fetchListing = async () => {
@@ -73,6 +75,29 @@ export default function Listing() {
         };
         fetchListing();
     }, [params.listingId])
+
+    useEffect(() => {
+        if (!listing || !listing.userRef) {
+            return;
+        }
+
+        const fetchUser = async () => {
+            try {
+                const res = await fetch(`/api/user/${listing.userRef}`);
+                const data = await res.json();
+                if (data.success === false) {
+                    setError(true);
+                    return;
+                }
+                setProfilePicture(data.avatar);
+                setName(data.username);
+                setUserCreated(data.createdAt);
+            } catch (error) {
+                setError(true);
+            }
+        };
+        fetchUser();
+    }, [listing])
 
     return (
         <main>
@@ -100,42 +125,70 @@ export default function Listing() {
                             }} />
                     </div>
                     {copied && (<p className='fixed top-[20%] right-[2.5%] z-10 rounded-md bg-slate-100 p-2'>Copied!</p>)}
-                    <div className='flex flex-col gap-4 fixed top-[10%] left-[2%] z-10'>
-                        <Link to={`/update-listing/${listing._id}`} className='rounded-lg bg-green-700 p-3 text-white font-semibold'>
-                            Update
-                        </Link>
-                        <button onClick={() => handleDeleteListing(listing._id)} className='rounded-lg bg-red-700 p-3 text-white font-semibold'>
-                            Delete
-                        </button>
-                    </div>
+
+                    {currentUser && listing.userRef === currentUser._id && (
+                        <div className='flex flex-col gap-4 fixed top-[10%] left-[2%] z-10'>
+                            <Link to={`/update-listing/${listing._id}`} className='rounded-lg bg-green-700 p-3 text-white font-semibold'>
+                                Update
+                            </Link>
+                            <button onClick={() => handleDeleteListing(listing._id)} className='rounded-lg bg-red-700 p-3 text-white font-semibold'>
+                                Delete
+                            </button>
+                        </div>
+                    )}
                     <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
-                        <p className='text-2xl font-semibold'>
-                            {listing.name} - ${' '}
-                            {listing.regularPrice.toLocaleString('en-US')}
-                            {listing.type === 'rent' && ' / month'}
-                        </p>
-                        <p className='uppercase text-xs'>
-                            Posted on {new Date(listing.createdAt).
-                            toLocaleString('en-US', { day: 'numeric', 
-                            month: 'long', year: 'numeric' })}
-                        </p>
-                        <p className='flex items-center gap-2 text-slate-600 text-sm'>
-                            <FaMapMarkerAlt className='text-green-700' />
-                            {listing.address}
-                        </p>
-                        <div>
-                            <p className='bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
-                                {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
-                            </p>
+                        <div className='relative group flex justify-between'>
+                            <div className='flex flex-col gap-4'>
+                                <p className='text-2xl font-semibold'>
+                                    {listing.name} - ${' '}
+                                    {listing.regularPrice.toLocaleString('en-US')}
+                                    {listing.type === 'rent' && ' / month'}
+                                </p>
+                                <p className='uppercase text-xs'>
+                                    Posted on {new Date(listing.createdAt).
+                                        toLocaleString('en-US', {
+                                            day: 'numeric',
+                                            month: 'long', year: 'numeric'
+                                        })}
+                                </p>
+                                <p className='flex items-center gap-2 text-slate-600 text-sm'>
+                                    <FaMapMarkerAlt className='text-green-700' />
+                                    {listing.address}
+                                </p>
+                                <div>
+                                    <p className='bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
+                                        {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div className='relative group flex flex-col sm:flex-row border rounded-lg justify-center items-center border-red-900 overflow-hidden hover:cursor-pointer'>
+                                <div className='flex sm:w-24 sm:h-24 items-center p-3 sm:justify-center overflow-hidden group-hover:h-full'>
+                                    <img
+                                        src={profilePicture}
+                                        className='h-24 w-24 self-center rounded-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-150 group-hover:rounded-lg'
+                                    />
+                                </div>
+                                <div className='flex flex-col my-auto gap-2 max-sm:hidden'>
+                                    <span className='font-semibold px-3 text-lg'>{name}</span>
+                                    <div className='flex whitespace-nowrap'>
+                                        <p className='font text-xs px-3 sm:pb-3'>
+                                            User since {new Date(userCreated).toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                         <p className='whitespace-pre-wrap'>{listing.description}</p>
                         <ul className='flex flex-wrap items-center gap-4 sm:gap-6 text-green-900 font-semibold text-sm'>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
-                                <FaBed className='text-lg' /> 
+                                <FaBed className='text-lg' />
                                 {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : `${listing.bedrooms} Bed`}
                             </li>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
-                                <FaBath className='text-lg' /> 
+                                <FaBath className='text-lg' />
                                 {listing.bathrooms > 1 ? `${listing.bathrooms} Baths` : `${listing.bathrooms} Bath`}
                             </li>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
@@ -148,7 +201,7 @@ export default function Listing() {
                             </li>
                         </ul>
                         {currentUser && listing.userRef !== currentUser._id && !contact && (
-                        <button onClick={() => setContact(true)} className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'>Contact Landlord</button>
+                            <button onClick={() => setContact(true)} className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'>Contact Landlord</button>
                         )}
                         {contact && <Contact listing={listing} />}
                     </div>

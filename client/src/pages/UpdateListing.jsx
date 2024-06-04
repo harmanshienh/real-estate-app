@@ -4,6 +4,8 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import DragDropFiles from '../components/DragDropFiles';
+import { TiDeleteOutline } from "react-icons/ti";
 
 export default function UpdateListing() {
     const navigate = useNavigate();
@@ -62,6 +64,7 @@ export default function UpdateListing() {
                 setImageUploadError('Image Upload Failed (Max 2MB per image)');
                 setUploading(false);
             });
+            setFiles([]);
         }
         else {
             setImageUploadError('Please upload no more than 6 Images per listing');
@@ -156,6 +159,14 @@ export default function UpdateListing() {
         }
     }
 
+    const extractFileNameFromURL = (url) => {
+        const URLWithoutFirebase = url.substring(url.lastIndexOf('/') + 1);
+        const URLWithoutDate = URLWithoutFirebase.slice(13);
+        const endIndex = URLWithoutDate.lastIndexOf('?');
+        const filename = URLWithoutDate.substring(0, endIndex);
+        return filename;
+    }
+
     return (
         <main className='p-3 max-w-4xl mx-auto'>
             <h1 className='text-3xl font-semibold text-center my-7'>Update Listing</h1>
@@ -204,9 +215,9 @@ export default function UpdateListing() {
                     <span className='font-semibold'>Images:
                         <span className='font-normal text-gray-600 ml-2'>The first image will be the cover (Max 6)</span>
                     </span>
-                    <div className='flex gap-4 max-w-full'>
-                        <input onChange={(e) => setFiles(e.target.files)} className='p-3 border-gray-300 rounded w-full' type='file' id='images' accept='image/*' multiple />
-                        <button type='button' onClick={handleImageSubmit} disabled={uploading} className='p-3 text-green-700 border border-green-700 rounded-lg uppercase hover:shadow-lg disabled:opacity-80'>
+                    <div className='sm:flex gap-4 max-w-full'>
+                        <DragDropFiles files={files} setFiles={setFiles} />
+                        <button type='button' onClick={handleImageSubmit} disabled={uploading} className='mt-3 sm:mt-0 p-3 max-h-16 text-green-700 font-semibold border border-green-700 rounded-lg uppercase hover:shadow-lg disabled:opacity-80'>
                             {uploading ? 'Uploading...' : 'Upload'}
                         </button>
                     </div>
@@ -217,7 +228,10 @@ export default function UpdateListing() {
                         formData.imageURLs.length > 0 && formData.imageURLs.map((url, index) => (
                             <div key={url} className='flex justify-between p-3 border items-center bg-slate-100'>
                                 <img src={url} alt='listing image' className='w-20 h-20 object-contain rounded-lg' />
-                                <button type='button' onClick={() => handleRemoveImage(index)} className='p-3 text-red-700 rounded-lg uppercase hover:opacity-75'>Delete</button>
+                                <span className='line-clamp-2 px-3'>{extractFileNameFromURL(url)}</span>
+                                <button type='button' onClick={() => handleRemoveImage(index)} className='p-3 hover:opacity-75'>
+                                    <TiDeleteOutline className='text-red-700 h-6 w-auto' />
+                                </button>
                             </div>
                         ))
                     }

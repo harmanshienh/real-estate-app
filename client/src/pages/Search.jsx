@@ -112,7 +112,7 @@ export default function Search() {
                         type='text' 
                         id='searchTerm' 
                         placeholder='Search'
-                        className='border rounded-lg p-3 w-full'
+                        className='border rounded-full p-3 w-full'
                         value={sidebarData.searchTerm}
                         onChange={handleChange}
                     />

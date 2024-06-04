@@ -57,9 +57,9 @@ export default function Header() {
                         <span className='text-slate-700'>Student Housing</span>
                     </h1>
                 </Link>
-                <form onSubmit={handleSubmit} className='bg-slate-100 p-3 rounded-lg flex items-center gap-2'>
+                <form onSubmit={handleSubmit} className='bg-slate-100 group p-3 rounded-full  flex items-center gap-2 border-2 border-yellow-500 focus-within:border-2 focus-within:border-red-500'>
                     <button>
-                        <FaSearch className='text-slate-600' />
+                        <FaSearch className='text-slate-600 group-focus-within:text-red-500' />
                     </button>
                     <input
                         value={searchTerm}
