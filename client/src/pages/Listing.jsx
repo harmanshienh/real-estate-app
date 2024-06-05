@@ -15,6 +15,7 @@ import {
     FaShare,
 } from 'react-icons/fa';
 import Contact from '../components/Contact'
+import UserCard from '../components/UserCard'
 
 export default function Listing() {
     SwiperCore.use([Navigation, EffectFade, Pagination, Autoplay]);
@@ -162,23 +163,7 @@ export default function Listing() {
                                 </div>
                             </div>
 
-                            <div className='relative group flex flex-col sm:flex-row border rounded-lg justify-center items-center border-red-900 overflow-hidden hover:cursor-pointer'>
-                                <div className='flex sm:w-24 sm:h-24 items-center p-3 sm:justify-center overflow-hidden group-hover:h-full'>
-                                    <img
-                                        src={profilePicture}
-                                        className='h-24 w-24 self-center rounded-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-150 group-hover:rounded-lg'
-                                    />
-                                </div>
-                                <div className='flex flex-col my-auto gap-2 max-sm:hidden'>
-                                    <span className='font-semibold px-3 text-lg'>{name}</span>
-                                    <div className='flex whitespace-nowrap'>
-                                        <p className='font text-xs px-3 sm:pb-3'>
-                                            User since {new Date(userCreated).toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-
+                            <UserCard name={name} profilePicture={profilePicture} userCreated={userCreated} linkTo={`/user/${listing.userRef}`} />
 
                         </div>
                         <p className='whitespace-pre-wrap'>{listing.description}</p>

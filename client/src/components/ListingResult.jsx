@@ -5,10 +5,7 @@ import {
     FaBath,
     FaBed,
     FaChair,
-    FaMapMarkedAlt,
-    FaMapMarkerAlt,
     FaParking,
-    FaShare,
 } from 'react-icons/fa';
 
 
