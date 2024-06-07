@@ -28,6 +28,7 @@ export default function Listing() {
     const [profilePicture, setProfilePicture] = useState(null);
     const [name, setName] = useState(null);
     const [userCreated, setUserCreated] = useState(null);
+    const [user, setUser] = useState(null);
 
     const params = useParams();
     const navigate = useNavigate();
@@ -93,6 +94,7 @@ export default function Listing() {
                 setProfilePicture(data.avatar);
                 setName(data.username);
                 setUserCreated(data.createdAt);
+                setUser(data);
             } catch (error) {
                 setError(true);
             }
@@ -115,15 +117,15 @@ export default function Listing() {
                             </SwiperSlide>
                         ))}
                     </Swiper>
-                    <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'>
-                        <FaShare className='text-slate-800'
-                            onClick={() => {
-                                navigator.clipboard.writeText(window.location.href);
-                                setCopied(true);
-                                setTimeout(() => {
-                                    setCopied(false);
-                                }, 2000)
-                            }} />
+                    <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'
+                        onClick={() => {
+                            navigator.clipboard.writeText(window.location.href);
+                            setCopied(true);
+                            setTimeout(() => {
+                                setCopied(false);
+                            }, 2000)
+                        }}>
+                        <FaShare className='text-slate-800' />
                     </div>
                     {copied && (<p className='fixed top-[20%] right-[2.5%] z-10 rounded-md bg-slate-100 p-2'>Copied!</p>)}
 
@@ -142,8 +144,7 @@ export default function Listing() {
                             <div className='flex flex-col gap-4'>
                                 <p className='text-2xl font-semibold'>
                                     {listing.name} - ${' '}
-                                    {listing.regularPrice.toLocaleString('en-US')}
-                                    {listing.type === 'rent' && ' / month'}
+                                    {listing.regularPrice.toLocaleString('en-US')} / month
                                 </p>
                                 <p className='uppercase text-xs'>
                                     Posted on {new Date(listing.createdAt).
@@ -158,12 +159,12 @@ export default function Listing() {
                                 </p>
                                 <div>
                                     <p className='bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
-                                        {listing.type === 'rent' ? 'For Rent' : 'For Sale'}
+                                        {listing.type === 'rent' ? 'For Rent' : 'For Sublease'}
                                     </p>
                                 </div>
                             </div>
 
-                            <UserCard name={name} profilePicture={profilePicture} userCreated={userCreated} linkTo={`/user/${listing.userRef}`} />
+                            <UserCard user={user} />
 
                         </div>
                         <p className='whitespace-pre-wrap'>{listing.description}</p>

@@ -63,9 +63,8 @@ export const getListing = async (req, res, next) => {
 }
 
 export const getListings = async (req, res, next) => {
-
     try {
-        const limit = parseInt(req.query.limit) || 9;
+        const limit = parseInt(req.query.limit) || 8;
         const startIndex = parseInt(req.query.startIndex) || 0;
         const searchTerm = req.query.searchTerm || '';
         const sort = req.query.sort || 'createdAt';
@@ -83,8 +82,8 @@ export const getListings = async (req, res, next) => {
             parking = { $in: [false, true] };
         }
 
-        if (type === undefined || parking === 'all') {
-            type = { $in: ['sale', 'rent'] };
+        if (type === undefined || type === 'all') {
+            type = { $in: ['sublet', 'rent'] };
         }
 
         const listings = await Listing.find({

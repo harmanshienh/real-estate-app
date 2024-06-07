@@ -86,7 +86,7 @@ export default function CreateListing() {
     };
 
     const handleChange = (e) => {
-        if (e.target.id === 'sale' || e.target.id === 'rent') {
+        if (e.target.id === 'sublet' || e.target.id === 'rent') {
             setFormData({
                 ...formData,
                 type: e.target.id
@@ -159,8 +159,8 @@ export default function CreateListing() {
                     <input type='text' placeholder='Address' className='border p-3 rounded-lg' id='address' required onChange={handleChange} value={formData.address} />
                     <div className='flex gap-6 flex-wrap'>
                         <div className='flex gap-2'>
-                            <input type='checkbox' id='sale' className='w-5' onChange={handleChange} checked={formData.type === 'sale'} />
-                            <span>Sell</span>
+                            <input type='checkbox' id='sublet' className='w-5' onChange={handleChange} checked={formData.type === 'sublet'} />
+                            <span>Sublease</span>
                         </div>
                         <div className='flex gap-2'>
                             <input type='checkbox' id='rent' className='w-5' onChange={handleChange} checked={formData.type === 'rent'} />
@@ -188,7 +188,7 @@ export default function CreateListing() {
                             <input type='number' id='regularPrice' min='1' max='10000000' required className='p-3 border border-gray-300 rounded-lg max-w-25' onChange={handleChange} value={formData.regularPrice} />
                             <div className='flex flex-col items-center'>
                                 <span>Price</span>
-                                {formData.type === 'rent' && (<span className='text-xs'>($ / month)</span>)}
+                                <span className='text-xs'>$ / month</span>
                             </div>
                         </div>
                     </div>

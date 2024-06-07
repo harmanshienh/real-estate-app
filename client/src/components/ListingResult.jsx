@@ -42,8 +42,7 @@ export default function ListingResult({ listing }) {
                             {listing.description}
                         </p>
                         <p className='text-red-700 mt-2 font-semibold'>
-                            {`$${listing.regularPrice.toLocaleString('en-US')}`}
-                            {listing.type === 'rent' && ' / month'}
+                            {`$${listing.regularPrice.toLocaleString('en-US')} / month`}
                         </p>
                         <div className='flex gap-4 mt-2'>
                             <div className='flex items-center gap-1'>
