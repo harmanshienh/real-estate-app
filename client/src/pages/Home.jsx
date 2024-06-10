@@ -4,13 +4,22 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore from 'swiper'
 import { Navigation, EffectFade, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css/bundle'
+import TextTransition, { presets } from 'react-text-transition';
 import ListingResult from '../components/ListingResult';
 
 export default function Home() {
   const [rentListings, setRentListings] = useState([]);
   const [subleaseListings, setSubleaseListings] = useState([]);
+  const [textIndex, setTextIndex] = useState(0);
+  const TEXTS = ['Place to live', 'Place to work', 'Home', 'Hangout Spot'];
   SwiperCore.use([Navigation, EffectFade, Pagination, Autoplay]);
 
+  useEffect(() => {
+    const intervalId = setInterval(
+      () => setTextIndex((textIndex) => textIndex + 1), 3000);
+      return () => clearTimeout(intervalId);
+  }, [])
+  
   useEffect(() => {
     const fetchRentListings = async () => {
       try {
@@ -39,17 +48,20 @@ export default function Home() {
 
   return (
     <div>
-      <div className='flex flex-col gap-6 py-28 px-3 max-w-6xl mx-auto'>
-        <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>Find Your Next <br /> Place With Ease</h1>
-        <div className='text-gray-600 text-xs sm:text-sm'>
-          Waterloo Student Housing is the best place to find your home for the next semester.
+      <div className='flex flex-col gap-3 py-28 px-3 max-w-6xl mx-auto'>
+        <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>Looking for a</h1>
+        <TextTransition springConfig={presets.stiff} direction='down' className='text-slate-700 font-bold text-3xl lg:text-6xl'>
+          {TEXTS[textIndex % TEXTS.length]}?
+        </TextTransition>
+        <div className='text-gray-600 text-xs sm:text-sm mt-3'>
+          Look no further than Waterloo Student Housing!
         </div>
         <Link to={'/search'} className='text-xs sm:text-sm text-blue-800 font-bold hover:underline'>
           Start Browsing...
         </Link>
       </div>
 
-      <Swiper effect={"fade"} pagination={{ clickable: true }} navigation autoplay>
+      <Swiper effect={"fade"} pagination={{ clickable: true }} autoplay>
         {rentListings && rentListings.length > 0 && (
           rentListings.map((listing) => (
             <SwiperSlide>
