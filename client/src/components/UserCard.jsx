@@ -7,7 +7,7 @@ export default function UserCard({ user }) {
     }
     return (
         <Link to={`/user/${user._id}`} className='contents'>
-            <div className='bg-slate-100 shadow-md hover:shadow-lg transition-shadow relative group flex flex-col sm:flex-row border rounded-lg justify-center items-center border-red-900 overflow-hidden hover:cursor-pointer'>
+            <div className='bg-slate-100 shadow-md hover:shadow-lg transition-shadow relative group flex flex-col sm:flex-row border rounded-lg justify-center items-center border-red-900 overflow-hidden hover:cursor-pointer h-36'>
                 <div className='flex sm:w-24 sm:h-24 items-center p-3 sm:justify-center overflow-hidden group-hover:h-full'>
                     <img
                         src={user.avatar}
