@@ -2,7 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { useRef } from 'react';
-import { getDownloadURL, getStorage, list, ref, uploadBytesResumable } from 'firebase/storage';
+import { 
+  getDownloadURL, 
+  getStorage, 
+  ref, 
+  uploadBytesResumable 
+} from 'firebase/storage';
 import { app } from '../firebase';
 import {
   updateUserStart, updateUserSuccess, updateUserFailure,
@@ -185,16 +190,22 @@ export default function Profile() {
       )}
       <div className='absolute'>
         {showDelete && (
-          <div className='fixed flex flex-col bg-slate-100 rounded-lg w-full sm:w-fit h-100 mt-3 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50'>
+          <div className='fixed flex flex-col bg-slate-100 rounded-lg w-full 
+               sm:w-fit h-100 mt-3 top-1/2 left-1/2 transform 
+               -translate-x-1/2 -translate-y-1/2 z-50'>
             <span className='self-center font-bold mx-auto p-3'>
               Are you sure you want to delete your account?
               <br /> This will delete all your listings.
             </span>
             <div className='flex justify-between bg-slate-100 rounded-lg'>
-              <button className='bg-red-500 rounded-md text-white p-3 m-3' onClick={() => setShowDelete(false)}>
+              <button 
+                className='bg-red-500 rounded-md text-white p-3 m-3' 
+                onClick={() => setShowDelete(false)}>
                 Cancel
               </button>
-              <button className=' bg-red-500 rounded-md text-white p-3 m-3' onClick={handleDeleteUser}>
+              <button 
+                className=' bg-red-500 rounded-md text-white p-3 m-3' 
+                onClick={handleDeleteUser}>
                 Delete Account
               </button>
             </div>
@@ -204,20 +215,42 @@ export default function Profile() {
       <div className={`p-3 max-w-lg mx-auto ${showDelete ? 'blur-sm' : ''}`}>
         <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
         <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-          <input onChange={(e) => setFile(e.target.files[0])} type='file' ref={fileRef} hidden accept='image/*' disabled={showDelete} />
+          <input 
+            onChange={(e) => setFile(e.target.files[0])} 
+            type='file' 
+            ref={fileRef} 
+            hidden 
+            accept='image/*' 
+            disabled={showDelete} />
           <div className='relative group self-center w-24 h-24 rounded-lg'>
-            <img onClick={() => fileRef.current.click()} src={formData.avatar || currentUser.avatar} alt='profile' className={`rounded-full h-full w-full object-cover ${!showDelete && 'cursor-pointer'} self-center`} />
+            <img 
+              onClick={() => fileRef.current.click()} 
+              src={formData.avatar || currentUser.avatar} 
+              alt='profile' 
+              className={`rounded-full h-full w-full object-cover 
+              ${!showDelete && 'cursor-pointer'} self-center`} />
             {!showDelete && (
-              <div className="flex justify-center absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-black w-24 h-12 opacity-0 group-hover:opacity-80 transition-opacity duration-300 rounded-b-full">
+              <div className="flex justify-center absolute bottom-0 left-1/2 
+                   transform -translate-x-1/2 bg-black w-24 h-12 opacity-0 
+                   group-hover:opacity-80 transition-opacity duration-300 
+                   rounded-b-full">
                 <span className='text-white text-xs mt-2'>Update Image</span>
               </div>
             )}
           </div>
           <p className='text-sm self-center'>
-            {fileUploadError ? (<span className='text-red-700'>Could not Upload Image (Must be less than 2MB)</span>) :
-              (filePerc > 0 && filePerc < 100) ? (<span className='text-slate-700'>{`Uploading ${filePerc}%`}</span>) :
-                (filePerc === 100) ? (<span className='text-green-700'>Image Successfully Uploaded!</span>) :
-                  ""
+            {fileUploadError ? (
+              <span className='text-red-700'>
+                Could not Upload Image (Must be less than 2MB)
+              </span>) :
+              (filePerc > 0 && filePerc < 100) ? (
+                <span className='text-slate-700'>
+                  {`Uploading ${filePerc}%`}
+                </span>) :
+                (filePerc === 100) ? (
+                <span className='text-green-700'>
+                  Image Successfully Uploaded!
+                </span>) : ""
             }
           </p>
           <input
@@ -239,41 +272,94 @@ export default function Profile() {
             disabled={showDelete}
           />
           <div className='relative group'>
-            <input type={showPassword ? 'text' : 'password'} placeholder='Password' className='border p-3 rounded-lg w-full' id='password' onChange={handleChange} disabled={showDelete} />
-            <div onClick={!showDelete ? () => (setShowPassword(!showPassword)) : () => {}} className='absolute right-3 top-1/3'>
+            <input 
+              type={showPassword ? 'text' : 'password'} 
+              placeholder='Password' 
+              className='border p-3 rounded-lg w-full' 
+              id='password' 
+              onChange={handleChange} 
+              disabled={showDelete} />
+            <div 
+              onClick={!showDelete ? () => (setShowPassword(!showPassword)) : () => {}} 
+              className='absolute right-3 top-1/3'>
               {showPassword ?
-                <FaEyeSlash className={`text-xl text-slate-600 ${!showDelete && 'cursor-pointer'}`} /> :
-                <FaEye className={`text-xl text-slate-600 ${!showDelete && 'cursor-pointer'}`} />
+                <FaEyeSlash className={`text-xl text-slate-600 
+                            ${!showDelete && 'cursor-pointer'}`} /> :
+                <FaEye className={`text-xl text-slate-600 
+                            ${!showDelete && 'cursor-pointer'}`} />
               }
             </div>
           </div>
           {!showDelete && (
-            <button disabled={loading} className='bg-yellow-500 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80 z-10'>{loading ? 'Loading...' : 'Update Profile'}</button>
+            <button 
+              disabled={loading} 
+              className='bg-yellow-500 text-white p-3 rounded-lg uppercase 
+              hover:opacity-95 disabled:opacity-80 z-10'>
+                {loading ? 'Loading...' : 'Update Profile'}
+            </button>
           )}
         </form>
         {!showDelete && (
           <div className='flex justify-between mt-5'>
-            <p onClick={() => setShowDelete(true)} className='text-red-700 hover:cursor-pointer'>Delete Account</p>
-            <Link to="/sign-in" onClick={handleSignOut} className='text-red-700 hover:cursor-pointer'>Sign Out</Link>
+            <p 
+              onClick={() => setShowDelete(true)} 
+              className='text-red-700 hover:cursor-pointer'>
+                Delete Account
+            </p>
+            <Link 
+              to="/sign-in" 
+              onClick={handleSignOut} 
+              className='text-red-700 hover:cursor-pointer'>
+                Sign Out
+            </Link>
           </div>
         )}
-        <p className='text-red-700 mt-5'>{error ? error : ''}</p>
-        <p className='text-green-700 mt-5'>{updateSuccess ? 'User updated successfully!' : ''}</p>
-        <button onClick={handleShowListings} className='text-green-700 w-full'>Show Listings</button>
-        <span className='text-red-700 mt-5'>{showListingsError && 'Error showing listings'}</span>
+        <p className='text-red-700 mt-5'>
+          {error ? error : ''}
+        </p>
+        <p className='text-green-700 mt-5'>
+          {updateSuccess ? 'User updated successfully!' : ''}
+        </p>
+        <button 
+          onClick={handleShowListings} 
+          className='text-green-700 w-full'>
+            Show Listings
+        </button>
+        <span className='text-red-700 mt-5'>
+          {showListingsError && 'Error showing listings'}
+        </span>
   
         {(userListings && userListings.length > 0) &&
           <div className='flex flex-col gap-4'>
-            <h1 className='text-center mt-7 text-2xl font-semibold'>Your Listings</h1>
+            <h1 className='text-center mt-7 text-2xl font-semibold'>
+              Your Listings
+            </h1>
             {userListings.map((listing) => (
-              <div key={listing._id} className='border rounded-lg p-3 flex justify-between items-center gap-4 bg-slate-100'>
-                <Link to={`/listing/${listing._id}`} className='text-slate-700 font-semibold hover:underline truncate flex-1'>
-                  <img src={listing.imageURLs[0]} alt='listing cover' className='h-16 w-16 object-contain' />
+              <div 
+                key={listing._id} 
+                className='border rounded-lg p-3 flex justify-between 
+                items-center gap-4 bg-slate-100'>
+                <Link 
+                  to={`/listing/${listing._id}`} 
+                  className='text-slate-700 font-semibold hover:underline 
+                  truncate flex-1'>
+                  <img 
+                    src={listing.imageURLs[0]} 
+                    alt='listing cover' 
+                    className='h-16 w-16 object-contain' />
                   <span>{listing.name}</span>
                 </Link>
                 <div className='flex flex-col items-center'>
-                  <button onClick={() => handleDeleteListing(listing._id)} className='text-red-700 uppercase'>Delete</button>
-                  <Link to={`/update-listing/${listing._id}`} className='text-green-700 uppercase'>Update</Link>
+                  <button 
+                    onClick={() => handleDeleteListing(listing._id)} 
+                    className='text-red-700 uppercase'>
+                      Delete
+                  </button>
+                  <Link
+                    to={`/update-listing/${listing._id}`} 
+                    className='text-green-700 uppercase'>
+                      Update
+                  </Link>
                 </div>
               </div>
             ))}

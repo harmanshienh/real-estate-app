@@ -57,7 +57,7 @@ export default function DragDropFiles({ files, setFiles }) {
                         <li
                             className='line-clamp-1 text-red-700 font-semibold'
                             key={index}>
-                                {file.name}
+                            {file.name}
                         </li>
                     )}
                 </ul>

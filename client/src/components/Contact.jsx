@@ -27,8 +27,12 @@ export default function Contact({ listing }) {
             {landlord && (
                 <div className='flex flex-col gap-2'>
                     <p>Contact <span className='font-semibold'>
-                        {landlord.username}</span> for <span className='font-semibold'>
-                            {listing.name}</span>
+                        {landlord.username}
+                        </span> 
+                        for 
+                        <span className='font-semibold'>
+                            {listing.name}
+                        </span>
                     </p>
                     <textarea
                         name='message'
@@ -39,7 +43,7 @@ export default function Contact({ listing }) {
                         placeholder='Enter message here:'
                         className='w-full border p-3 rounded-lg'>
                     </textarea>
-                    <Link 
+                    <Link
                         to={`mailto:${landlord.email}
                         ?subject=Regarding ${listing.name}
                         &body=${message}`}

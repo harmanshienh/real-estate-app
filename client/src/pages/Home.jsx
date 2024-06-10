@@ -49,14 +49,21 @@ export default function Home() {
   return (
     <div>
       <div className='flex flex-col gap-3 py-28 px-3 max-w-6xl mx-auto'>
-        <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>Looking for a</h1>
-        <TextTransition springConfig={presets.stiff} direction='down' className='text-slate-700 font-bold text-3xl lg:text-6xl'>
+        <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>
+          Looking for a
+        </h1>
+        <TextTransition 
+          springConfig={presets.stiff} 
+          direction='down' 
+          className='text-slate-700 font-bold text-3xl lg:text-6xl'>
           {TEXTS[textIndex % TEXTS.length]}?
         </TextTransition>
         <div className='text-gray-600 text-xs sm:text-sm mt-3'>
           Look no further than Waterloo Student Housing!
         </div>
-        <Link to={'/search'} className='text-xs sm:text-sm text-blue-800 font-bold hover:underline'>
+        <Link 
+          to={'/search'} 
+          className='text-xs sm:text-sm text-blue-800 font-bold hover:underline'>
           Start Browsing...
         </Link>
       </div>

@@ -35,7 +35,11 @@ export default function OAuth() {
     }
   };
   return (
-    <button onClick={handleGoogleClick} type='button' className='bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95 relative flex'>
+    <button 
+      onClick={handleGoogleClick} 
+      type='button' 
+      className='bg-red-700 text-white p-3 rounded-lg uppercase 
+      hover:opacity-95 relative flex'>
       <FaGoogle className='text-white text-2xl left-0' />
       <span className='mx-auto'>Continue with Google</span>
     </button>

@@ -1,6 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { 
+    getDownloadURL, 
+    getStorage, 
+    ref, 
+    uploadBytesResumable 
+} from 'firebase/storage';
 import { app } from '../firebase';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -151,41 +156,111 @@ export default function CreateListing() {
 
     return (
         <main className='p-3 max-w-4xl mx-auto'>
-            <h1 className='text-3xl font-semibold text-center my-7'>Create a Listing</h1>
+            <h1 className='text-3xl font-semibold text-center my-7'>
+                Create a Listing
+            </h1>
             <form onSubmit={handleSubmit} className='flex flex-col sm:flex-row gap-4'>
                 <div className='flex flex-col gap-4 flex-1'>
-                    <input type='text' placeholder='Name' className='border p-3 rounded-lg' id='name' maxLength='62' minLength='10' required onChange={handleChange} value={formData.name} />
-                    <textarea type='text' placeholder='Description' className='border p-3 rounded-lg' id='description' required onChange={handleChange} value={formData.description} />
-                    <input type='text' placeholder='Address' className='border p-3 rounded-lg' id='address' required onChange={handleChange} value={formData.address} />
+                    <input 
+                        type='text' 
+                        placeholder='Name' 
+                        className='border p-3 rounded-lg' 
+                        id='name' 
+                        maxLength='62' 
+                        minLength='10' 
+                        required 
+                        onChange={handleChange} 
+                        value={formData.name} />
+                    <textarea 
+                        type='text' 
+                        placeholder='Description' 
+                        className='border p-3 rounded-lg' 
+                        id='description' 
+                        required 
+                        onChange={handleChange} 
+                        value={formData.description} />
+                    <input 
+                        type='text' 
+                        placeholder='Address' 
+                        className='border p-3 rounded-lg' 
+                        id='address' 
+                        required 
+                        onChange={handleChange} 
+                        value={formData.address} />
                     <div className='flex gap-6 flex-wrap'>
                         <div className='flex gap-2'>
-                            <input type='checkbox' id='sublet' className='w-5' onChange={handleChange} checked={formData.type === 'sublet'} />
+                            <input 
+                                type='checkbox' 
+                                id='sublet' 
+                                className='w-5' 
+                                onChange={handleChange} 
+                                checked={formData.type === 'sublet'} />
                             <span>Sublease</span>
                         </div>
                         <div className='flex gap-2'>
-                            <input type='checkbox' id='rent' className='w-5' onChange={handleChange} checked={formData.type === 'rent'} />
+                            <input 
+                                type='checkbox' 
+                                id='rent' 
+                                className='w-5' 
+                                onChange={handleChange} 
+                                checked={formData.type === 'rent'} />
                             <span>Rent</span>
                         </div>
                         <div className='flex gap-2'>
-                            <input type='checkbox' id='parking' className='w-5' onChange={handleChange} checked={formData.parking} />
+                            <input 
+                                type='checkbox' 
+                                id='parking' 
+                                className='w-5' 
+                                onChange={handleChange} 
+                                checked={formData.parking} />
                             <span>Parking Spot</span>
                         </div>
                         <div className='flex gap-2'>
-                            <input type='checkbox' id='furnished' className='w-5' onChange={handleChange} checked={formData.furnished} />
+                            <input 
+                                type='checkbox' 
+                                id='furnished' 
+                                className='w-5' 
+                                onChange={handleChange} 
+                                checked={formData.furnished} />
                             <span>Furnished</span>
                         </div>
                     </div>
                     <div className='flex gap-6 flex-wrap'>
                         <div className='flex items-center gap-2'>
-                            <input type='number' id='bedrooms' min='1' max='10' required className='p-3 border border-gray-300 rounded-lg' onChange={handleChange} value={formData.bedrooms} />
+                            <input 
+                                type='number' 
+                                id='bedrooms' 
+                                min='1' 
+                                max='10' 
+                                required 
+                                className='p-3 border border-gray-300 rounded-lg' 
+                                onChange={handleChange} 
+                                value={formData.bedrooms} />
                             <span>Beds</span>
                         </div>
                         <div className='flex items-center gap-2'>
-                            <input type='number' id='bathrooms' min='1' max='10' required className='p-3 border border-gray-300 rounded-lg' onChange={handleChange} value={formData.bathrooms} />
+                            <input 
+                                type='number' 
+                                id='bathrooms' 
+                                min='1' 
+                                max='10' 
+                                required 
+                                className='p-3 border border-gray-300 rounded-lg' 
+                                onChange={handleChange} 
+                                value={formData.bathrooms} />
                             <span>Baths</span>
                         </div>
                         <div className='flex items-center gap-2 w-full'>
-                            <input type='number' id='regularPrice' min='1' max='10000000' required className='p-3 border border-gray-300 rounded-lg max-w-25' onChange={handleChange} value={formData.regularPrice} />
+                            <input 
+                                type='number' 
+                                id='regularPrice' 
+                                min='1' 
+                                max='10000000' 
+                                required 
+                                className='p-3 border border-gray-300 
+                                           rounded-lg max-w-25' 
+                                onChange={handleChange} 
+                                value={formData.regularPrice} />
                             <div className='flex flex-col items-center'>
                                 <span>Price</span>
                                 <span className='text-xs'>$ / month</span>
@@ -194,30 +269,59 @@ export default function CreateListing() {
                     </div>
                 </div>
                 <div className='flex flex-col flex-1 gap-4'>
-                    <span className='font-semibold'>Images:
-                        <span className='font-normal text-gray-600 ml-2'>The first image will be the cover (Max 6)</span>
+                    <span className='font-semibold'>
+                        Images:
+                        <span className='font-normal text-gray-600 ml-2'>
+                            The first image will be the cover (Max 6)
+                        </span>
                     </span>
                     <div className='sm:flex gap-4 max-w-full'>
                         <DragDropFiles files={files} setFiles={setFiles} />
-                        <button type='button' onClick={handleImageSubmit} disabled={uploading} className='mt-3 sm:mt-0 p-3 max-h-16 text-green-700 font-semibold border border-green-700 rounded-lg uppercase hover:shadow-lg disabled:opacity-80'>
+                        <button 
+                            type='button' 
+                            onClick={handleImageSubmit} 
+                            disabled={uploading} 
+                            className='mt-3 sm:mt-0 p-3 max-h-16 text-green-700 
+                                       font-semibold border border-green-700 
+                                       rounded-lg uppercase hover:shadow-lg 
+                                       disabled:opacity-80'>
                             {uploading ? 'Uploading...' : 'Upload'}
                         </button>
                     </div>
                     <p className='text-sm self-center'>
-                        {imageUploadError &&  (<span className='text-red-700 text-sm'>{imageUploadError}</span>)}
+                        {imageUploadError &&  (
+                            <span className='text-red-700 text-sm'>
+                                {imageUploadError}
+                            </span>)}
                     </p>
                     {
-                        formData.imageURLs.length > 0 && formData.imageURLs.map((url, index) => (
-                            <div key={url} className='flex justify-between p-3 border items-center bg-slate-100'>
-                                <img src={url} alt='listing image' className='w-20 h-20 object-contain rounded-lg' />
-                                <span className='line-clamp-2 px-3'>{extractFileNameFromURL(url)}</span>
-                                <button type='button' onClick={() => handleRemoveImage(index)} className='p-3 hover:opacity-75'>
+                        formData.imageURLs.length > 0 && 
+                        formData.imageURLs.map((url, index) => (
+                            <div key={url} 
+                                 className='flex justify-between p-3 border 
+                                            items-center bg-slate-100'>
+                                <img 
+                                    src={url} 
+                                    alt='listing image' 
+                                    className='w-20 h-20 object-contain rounded-lg' />
+                                <span className='line-clamp-2 px-3'>
+                                    {extractFileNameFromURL(url)}
+                                </span>
+                                <button 
+                                    type='button' 
+                                    onClick={() => handleRemoveImage(index)} 
+                                    className='p-3 hover:opacity-75'>
                                     <TiDeleteOutline className='text-red-700 h-6 w-auto' />
                                 </button>
                             </div>
                         ))
                     }
-                    <button disabled={submitLoading || uploading} className='p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80'>{submitLoading ? 'Creating...' : 'Create Listing'}</button>
+                    <button 
+                        disabled={submitLoading || uploading} 
+                        className='p-3 bg-slate-700 text-white rounded-lg 
+                                   uppercase hover:opacity-95 disabled:opacity-80'>
+                        {submitLoading ? 'Creating...' : 'Create Listing'}
+                    </button>
                     {error && <p className='text-red-700 text-sm'>{error}</p>}
                 </div>
             </form>

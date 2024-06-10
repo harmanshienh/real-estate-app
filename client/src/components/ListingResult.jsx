@@ -20,7 +20,8 @@ export default function ListingResult({ listing }) {
                     hover:scale-105 transition-scale duration-300' />
                 <div className='p-3 flex flex-col gap-2'>
                     <div className='flex items-center relative group'>
-                        <p className='truncate text-lg font-semibold text-slate-700 hover:underline'>
+                        <p className='truncate text-lg font-semibold 
+                         text-slate-700 hover:underline'>
                             {listing.name}
                         </p>
                         <p className='uppercase text-xs absolute right-0'>

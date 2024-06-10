@@ -59,7 +59,9 @@ export default function Listing() {
         const fetchListing = async () => {
             try {
                 setLoading(true);
-                const res = await fetch(`/api/listing/get-listing/${params.listingId}`);
+                const res = await fetch(
+                    `/api/listing/get-listing/${params.listingId}`
+                );
                 const data = await res.json();
                 if (data.success === false) {
                     setError(true);
@@ -105,19 +107,30 @@ export default function Listing() {
     return (
         <main>
             {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
-            {error && <p className='text-center my-7 -text-2xl text-red-700'>Error loading listing</p>}
+            {error && 
+            <p className='text-center my-7 -text-2xl text-red-700'>
+                Error loading listing
+            </p>}
             {listing && !loading && !error && (
                 <div>
-                    <Swiper effect={"fade"} pagination={{ clickable: true }} navigation autoplay>
+                    <Swiper 
+                        effect={"fade"}
+                        pagination={{ clickable: true }} 
+                        navigation 
+                        autoplay>
                         {listing.imageURLs.map((url) => (
                             <SwiperSlide key={url}>
                                 <div className='h-[550px]'>
-                                    <img src={url} className='h-full w-full object-cover' />
+                                    <img 
+                                        src={url} 
+                                        className='h-full w-full object-cover' />
                                 </div>
                             </SwiperSlide>
                         ))}
                     </Swiper>
-                    <div className='fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'
+                    <div className='fixed top-[13%] right-[3%] z-10 border 
+                         rounded-full w-12 h-12 flex justify-center items-center 
+                         bg-slate-100 cursor-pointer'
                         onClick={() => {
                             navigator.clipboard.writeText(window.location.href);
                             setCopied(true);
@@ -127,14 +140,25 @@ export default function Listing() {
                         }}>
                         <FaShare className='text-slate-800' />
                     </div>
-                    {copied && (<p className='fixed top-[20%] right-[2.5%] z-10 rounded-md bg-slate-100 p-2'>Copied!</p>)}
+                    {copied && (
+                        <p className='fixed top-[20%] right-[2.5%] z-10 
+                           rounded-md bg-slate-100 p-2'>
+                            Copied!
+                        </p>)}
 
                     {currentUser && listing.userRef === currentUser._id && (
-                        <div className='flex flex-col gap-4 fixed top-[10%] left-[2%] z-10'>
-                            <Link to={`/update-listing/${listing._id}`} className='rounded-lg bg-green-700 p-3 text-white font-semibold'>
+                        <div className='flex flex-col gap-4 fixed top-[10%] 
+                             left-[2%] z-10'>
+                            <Link 
+                                to={`/update-listing/${listing._id}`} 
+                                className='rounded-lg bg-green-700 p-3 
+                                text-white font-semibold'>
                                 Update
                             </Link>
-                            <button onClick={() => handleDeleteListing(listing._id)} className='rounded-lg bg-red-700 p-3 text-white font-semibold'>
+                            <button 
+                                onClick={() => handleDeleteListing(listing._id)} 
+                                className='rounded-lg bg-red-700 p-3 
+                                text-white font-semibold'>
                                 Delete
                             </button>
                         </div>
@@ -153,13 +177,16 @@ export default function Listing() {
                                             month: 'long', year: 'numeric'
                                         })}
                                 </p>
-                                <p className='flex items-center gap-2 text-slate-600 text-sm'>
+                                <p className='flex items-center gap-2 
+                                 text-slate-600 text-sm'>
                                     <FaMapMarkerAlt className='text-green-700' />
                                     {listing.address}
                                 </p>
                                 <div>
-                                    <p className='bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md'>
-                                        {listing.type === 'rent' ? 'For Rent' : 'For Sublease'}
+                                    <p className='bg-red-900 w-full max-w-[200px] 
+                                     text-white text-center p-1 rounded-md'>
+                                        {listing.type === 'rent' ? 'For Rent' 
+                                        : 'For Sublease'}
                                     </p>
                                 </div>
                             </div>
@@ -168,14 +195,17 @@ export default function Listing() {
 
                         </div>
                         <p className='whitespace-pre-wrap'>{listing.description}</p>
-                        <ul className='flex flex-wrap items-center gap-4 sm:gap-6 text-green-900 font-semibold text-sm'>
+                        <ul className='flex flex-wrap items-center gap-4 sm:gap-6 
+                            text-green-900 font-semibold text-sm'>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
                                 <FaBed className='text-lg' />
-                                {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : `${listing.bedrooms} Bed`}
+                                {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` 
+                                : `${listing.bedrooms} Bed`}
                             </li>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
                                 <FaBath className='text-lg' />
-                                {listing.bathrooms > 1 ? `${listing.bathrooms} Baths` : `${listing.bathrooms} Bath`}
+                                {listing.bathrooms > 1 ? `${listing.bathrooms} Baths` 
+                                : `${listing.bathrooms} Bath`}
                             </li>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
                                 {listing.parking && (<FaParking className='text-lg' />)}
@@ -187,7 +217,12 @@ export default function Listing() {
                             </li>
                         </ul>
                         {currentUser && listing.userRef !== currentUser._id && !contact && (
-                            <button onClick={() => setContact(true)} className='bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3'>Contact Landlord</button>
+                            <button 
+                                onClick={() => setContact(true)} 
+                                className='bg-slate-700 text-white rounded-lg 
+                                uppercase hover:opacity-95 p-3'>
+                                    Contact Landlord
+                            </button>
                         )}
                         {contact && <Contact listing={listing} />}
                     </div>
