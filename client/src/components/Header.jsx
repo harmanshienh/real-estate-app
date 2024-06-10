@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FaSearch } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import './Header.css'
 
 export default function Header() {
     const { currentUser } = useSelector(state => state.user);
@@ -66,17 +67,17 @@ export default function Header() {
                         onChange={(e) => setSearchTerm(e.target.value)}
                         type='text'
                         placeholder='Search'
-                        className='bg-transparent focus:outline-none w-24 sm:w-64' />
+                        className='bg-transparent focus:outline-none hide-placeholder hidden sm:w-64 sm:block' />
                 </form>
                 <ul className='flex gap-4 items-center'>
                     <Link to='/'>
                         <li className='hidden sm:inline text-slate-700 hover:underline cursor-pointer'>Home</li>
                     </Link>
-                    <Link to='/about'>
-                        <li className='hidden sm:inline text-slate-700 hover:underline cursor-pointer'>About</li>
-                    </Link>
                     {currentUser ? <Link to='/create-listing'>
-                        <li className="bg-red-700 text-white p-2 rounded-lg font-semibold text-center hover:opacity-95">Create Listing</li>
+                        <li className="bg-red-700 text-white p-2 rounded-lg font-semibold text-center hover:opacity-95">
+                            <span className="block sm:hidden">Create</span>
+                            <span className="hidden sm:block">Create Listing</span>
+                        </li>
                     </Link> : ""}
                     <Link to='/profile'>
                         {currentUser ? (<img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar} alt='Profile' />) :
