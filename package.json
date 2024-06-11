@@ -115,6 +115,9 @@
     "wrap-ansi-cjs": "^7.0.0",
     "yaml": "^2.3.4"
   },
+  "optionalDependencies": {
+    "fsevents": "^2.3.3"
+  },
   "scripts": {
     "dev": "nodemon api/index.js",
     "start": "node api/index.js",
