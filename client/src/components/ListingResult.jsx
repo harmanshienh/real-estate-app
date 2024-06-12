@@ -16,7 +16,7 @@ export default function ListingResult({ listing }) {
         w-full sm:w-[330px]'>
             <Link to={`/listing/${listing._id}`} className='flex flex-col gap-4'>
                 <img src={listing.imageURLs[0]} alt={listing.name}
-                    className='h-[320px] sm:h-[220px] w-full object-cover 
+                    className='h-[180px] sm:h-[220px] w-full object-cover 
                     hover:scale-105 transition-scale duration-300' />
                 <div className='p-3 flex flex-col gap-2'>
                     <div className='flex items-center relative group'>

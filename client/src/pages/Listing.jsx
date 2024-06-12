@@ -107,22 +107,22 @@ export default function Listing() {
     return (
         <main>
             {loading && <p className='text-center my-7 text-2xl'>Loading...</p>}
-            {error && 
-            <p className='text-center my-7 -text-2xl text-red-700'>
-                Error loading listing
-            </p>}
+            {error &&
+                <p className='text-center my-7 -text-2xl text-red-700'>
+                    Error loading listing
+                </p>}
             {listing && !loading && !error && (
                 <div>
-                    <Swiper 
+                    <Swiper
                         effect={"fade"}
-                        pagination={{ clickable: true }} 
-                        navigation 
+                        pagination={{ clickable: true }}
+                        navigation
                         autoplay>
                         {listing.imageURLs.map((url) => (
                             <SwiperSlide key={url}>
                                 <div className='h-[550px]'>
-                                    <img 
-                                        src={url} 
+                                    <img
+                                        src={url}
                                         className='h-full w-full object-cover' />
                                 </div>
                             </SwiperSlide>
@@ -149,26 +149,33 @@ export default function Listing() {
                     {currentUser && listing.userRef === currentUser._id && (
                         <div className='flex flex-col gap-4 fixed top-[10%] 
                              left-[2%] z-10'>
-                            <Link 
-                                to={`/update-listing/${listing._id}`} 
+                            <Link
+                                to={`/update-listing/${listing._id}`}
                                 className='rounded-lg bg-green-700 p-3 
                                 text-white font-semibold'>
                                 Update
                             </Link>
-                            <button 
-                                onClick={() => handleDeleteListing(listing._id)} 
+                            <button
+                                onClick={() => handleDeleteListing(listing._id)}
                                 className='rounded-lg bg-red-700 p-3 
                                 text-white font-semibold'>
                                 Delete
                             </button>
                         </div>
                     )}
-                    <div className='flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4'>
+                    <div className='flex flex-col max-w-4xl mx-auto py-3 px-1 sm:p-3 my-7 gap-4'>
                         <div className='relative group flex justify-between'>
                             <div className='flex flex-col gap-4'>
-                                <p className='text-2xl font-semibold'>
-                                    {listing.name} - ${' '}
-                                    {listing.regularPrice.toLocaleString('en-US')} / month
+                                <p className='text-2xl font-semibold block sm:inline'>
+                                    <span className='block sm:inline'>
+                                        {listing.name}
+                                    </span>
+                                    <span className='hidden sm:inline'>
+                                    {' '} - ${' '} {listing.regularPrice.toLocaleString('en-US')} / month
+                                    </span>
+                                    <span className='block sm:hidden'>
+                                    ${' '} {listing.regularPrice.toLocaleString('en-US')} / month
+                                    </span>
                                 </p>
                                 <p className='uppercase text-xs'>
                                     Posted on {new Date(listing.createdAt).
@@ -185,8 +192,8 @@ export default function Listing() {
                                 <div>
                                     <p className='bg-red-900 w-full max-w-[200px] 
                                      text-white text-center p-1 rounded-md'>
-                                        {listing.type === 'rent' ? 'For Rent' 
-                                        : 'For Sublease'}
+                                        {listing.type === 'rent' ? 'For Rent'
+                                            : 'For Sublease'}
                                     </p>
                                 </div>
                             </div>
@@ -199,13 +206,13 @@ export default function Listing() {
                             text-green-900 font-semibold text-sm'>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
                                 <FaBed className='text-lg' />
-                                {listing.bedrooms > 1 ? `${listing.bedrooms} Beds` 
-                                : `${listing.bedrooms} Bed`}
+                                {listing.bedrooms > 1 ? `${listing.bedrooms} Beds`
+                                    : `${listing.bedrooms} Bed`}
                             </li>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
                                 <FaBath className='text-lg' />
-                                {listing.bathrooms > 1 ? `${listing.bathrooms} Baths` 
-                                : `${listing.bathrooms} Bath`}
+                                {listing.bathrooms > 1 ? `${listing.bathrooms} Baths`
+                                    : `${listing.bathrooms} Bath`}
                             </li>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
                                 {listing.parking && (<FaParking className='text-lg' />)}
@@ -217,11 +224,11 @@ export default function Listing() {
                             </li>
                         </ul>
                         {currentUser && listing.userRef !== currentUser._id && !contact && (
-                            <button 
-                                onClick={() => setContact(true)} 
+                            <button
+                                onClick={() => setContact(true)}
                                 className='bg-slate-700 text-white rounded-lg 
                                 uppercase hover:opacity-95 p-3'>
-                                    Contact Landlord
+                                Contact Landlord
                             </button>
                         )}
                         {contact && <Contact listing={listing} />}

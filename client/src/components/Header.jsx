@@ -63,7 +63,7 @@ export default function Header() {
                 <form onSubmit={handleSubmit} 
                       className='bg-slate-100 group p-3 
                       rounded-full  flex items-center gap-2 border-2 border-yellow-500 
-                      focus-within:border-2 focus-within:border-red-500'>
+                      focus-within:border-2 focus-within:border-red-500 max-sm:hidden'>
                     <button>
                         <FaSearch className='text-slate-600 
                                 group-focus-within:text-red-500' />

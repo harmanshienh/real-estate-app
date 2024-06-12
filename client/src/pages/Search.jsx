@@ -248,7 +248,7 @@ export default function Search() {
                     <h1 className='text-3xl font-semibold p-3 text-slate-700 mt-5'>
                         Users:
                     </h1>
-                    <div className='p-7 flex flex-wrap gap-4'>
+                    <div className='p-1 sm:p-7 flex flex-wrap gap-2 sm:gap-4'>
                         {loading && (
                             <p className='text-xl text-slate-700'>Loading</p>
                         )}
