@@ -16,7 +16,7 @@ import {
 } from 'react-icons/fa';
 import Contact from '../components/Contact'
 import UserCard from '../components/UserCard'
-import ReactHtmlParser from 'react-html-parser';
+import parse from 'html-react-parser';
 
 export default function Listing() {
     SwiperCore.use([Navigation, EffectFade, Pagination, Autoplay]);
@@ -202,7 +202,7 @@ export default function Listing() {
                             <UserCard user={user} />
 
                         </div>
-                        <p className='whitespace-pre-wrap'>{ReactHtmlParser(listing.description)}</p>
+                        <p className='whitespace-pre-wrap'>{parse(listing.description)}</p>
                         <ul className='flex flex-wrap items-center gap-4 sm:gap-6 
                             text-green-900 font-semibold text-sm'>
                             <li className='flex items-center gap-2 whitespace-nowrap'>
