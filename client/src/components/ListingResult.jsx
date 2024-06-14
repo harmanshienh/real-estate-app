@@ -10,6 +10,12 @@ import {
 
 
 export default function ListingResult({ listing }) {
+    const htmlToPlainText = (html) => {
+        const tempElement = document.createElement('div');
+        tempElement.innerHTML = html;
+        return tempElement.textContent || tempElement.innerText || '';
+    }
+
     return (
         <div className='bg-slate-100 shadow-md 
         hover:shadow-lg transition-shadow overflow-hidden rounded-lg 
@@ -40,7 +46,7 @@ export default function ListingResult({ listing }) {
                     </div>
                     <div>
                         <p className='text-sm text-gray-700 line-clamp-2'>
-                            {listing.description}
+                            {htmlToPlainText(listing.description)}
                         </p>
                         <p className='text-red-700 mt-2 font-semibold'>
                             {`$${listing.regularPrice.toLocaleString('en-US')} / month`}

@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import DragDropFiles from '../components/DragDropFiles';
 import { TiDeleteOutline } from "react-icons/ti";
+import RichTextEditor from '../components/RichTextEditor';
 
 export default function CreateListing() {
     const navigate = useNavigate();
@@ -111,6 +112,10 @@ export default function CreateListing() {
         }
     };
 
+    const handleQuillChange = (value) => {
+        setFormData({...formData, description: value});
+    } 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -171,14 +176,9 @@ export default function CreateListing() {
                         required 
                         onChange={handleChange} 
                         value={formData.name} />
-                    <textarea 
-                        type='text' 
-                        placeholder='Description' 
-                        className='border p-3 rounded-lg' 
-                        id='description' 
-                        required 
-                        onChange={handleChange} 
-                        value={formData.description} />
+                    <RichTextEditor 
+                        value={formData.description} 
+                        onChange={handleQuillChange}  />
                     <input 
                         type='text' 
                         placeholder='Address' 
@@ -283,7 +283,8 @@ export default function CreateListing() {
                             disabled={uploading} 
                             className='mt-3 sm:mt-0 p-3 max-h-16 text-green-700 
                                        font-semibold border border-green-700 
-                                       rounded-lg uppercase hover:shadow-lg 
+                                       rounded-lg uppercase hover:shadow-lg
+                                       hover:text-white hover:bg-green-700 
                                        disabled:opacity-80'>
                             {uploading ? 'Uploading...' : 'Upload'}
                         </button>

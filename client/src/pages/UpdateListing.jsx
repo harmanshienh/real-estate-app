@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { 
+import {
     getDownloadURL,
-    getStorage, 
-    ref, 
-    uploadBytesResumable } from 'firebase/storage';
+    getStorage,
+    ref,
+    uploadBytesResumable
+} from 'firebase/storage';
 import { app } from '../firebase';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import DragDropFiles from '../components/DragDropFiles';
 import { TiDeleteOutline } from "react-icons/ti";
+import RichTextEditor from '../components/RichTextEditor';
 
 export default function UpdateListing() {
     const navigate = useNavigate();
@@ -59,7 +61,7 @@ export default function UpdateListing() {
             for (let i = 0; i < files.length; i++) {
                 promises.push(storeImage(files[i]));
             }
-            
+
             Promise.all(promises).then((urls) => {
                 setFormData({ ...formData, imageURLs: formData.imageURLs.concat(urls) });
                 setImageUploadError(false);
@@ -102,7 +104,7 @@ export default function UpdateListing() {
 
     const handleRemoveImage = (index) => {
         setFormData({
-            ...formData, 
+            ...formData,
             imageURLs: formData.imageURLs.filter((_, i) => i !== index),
         });
     };
@@ -127,6 +129,10 @@ export default function UpdateListing() {
             })
         }
     };
+
+    const handleQuillChange = (value) => {
+        setFormData({ ...formData, description: value });
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -158,7 +164,7 @@ export default function UpdateListing() {
             navigate(`/listing/${data._id}`);
         } catch (error) {
             setError(error.message);
-            setSubmitLoading(false); 
+            setSubmitLoading(false);
             console.log(error);
         }
     }
@@ -176,108 +182,103 @@ export default function UpdateListing() {
             <h1 className='text-3xl font-semibold text-center my-7'>
                 Update Listing
             </h1>
-            <form 
-                onSubmit={handleSubmit} 
+            <form
+                onSubmit={handleSubmit}
                 className='flex flex-col sm:flex-row gap-4'>
                 <div className='flex flex-col gap-4 flex-1'>
-                    <input 
-                        type='text' 
-                        placeholder='Name' 
-                        className='border p-3 rounded-lg' 
-                        id='name' 
-                        maxLength='62' 
-                        minLength='10' 
-                        required 
-                        onChange={handleChange} 
+                    <input
+                        type='text'
+                        placeholder='Name'
+                        className='border p-3 rounded-lg'
+                        id='name'
+                        maxLength='62'
+                        minLength='10'
+                        required
+                        onChange={handleChange}
                         value={formData.name} />
-                    <textarea 
-                        type='text' 
-                        placeholder='Description' 
-                        className='border p-3 rounded-lg' 
-                        id='description' 
-                        required 
-                        onChange={handleChange} 
-                        value={formData.description} />
-                    <input 
-                        type='text' 
-                        placeholder='Address' 
-                        className='border p-3 rounded-lg' 
-                        id='address' 
-                        required 
-                        onChange={handleChange} 
+                    <RichTextEditor 
+                        value={formData.description} 
+                        onChange={handleQuillChange} />
+                    <input
+                        type='text'
+                        placeholder='Address'
+                        className='border p-3 rounded-lg'
+                        id='address'
+                        required
+                        onChange={handleChange}
                         value={formData.address} />
                     <div className='flex gap-6 flex-wrap'>
                         <div className='flex gap-2'>
-                            <input 
-                                type='checkbox' 
-                                id='sublet' 
-                                className='w-5' 
-                                onChange={handleChange} 
+                            <input
+                                type='checkbox'
+                                id='sublet'
+                                className='w-5'
+                                onChange={handleChange}
                                 checked={formData.type === 'sublet'} />
                             <span>Sublease</span>
                         </div>
                         <div className='flex gap-2'>
-                            <input 
-                                type='checkbox' 
-                                id='rent' 
-                                className='w-5' 
-                                onChange={handleChange} 
+                            <input
+                                type='checkbox'
+                                id='rent'
+                                className='w-5'
+                                onChange={handleChange}
                                 checked={formData.type === 'rent'} />
                             <span>Rent</span>
                         </div>
                         <div className='flex gap-2'>
-                            <input 
-                                type='checkbox' 
-                                id='parking' 
-                                className='w-5' 
-                                onChange={handleChange} 
+                            <input
+                                type='checkbox'
+                                id='parking'
+                                className='w-5'
+                                onChange={handleChange}
                                 checked={formData.parking} />
                             <span>Parking Spot</span>
                         </div>
                         <div className='flex gap-2'>
-                            <input 
-                                type='checkbox' 
-                                id='furnished' 
-                                className='w-5' 
-                                onChange={handleChange} 
+                            <input
+                                type='checkbox'
+                                id='furnished'
+                                className='w-5'
+                                onChange={handleChange}
                                 checked={formData.furnished} />
                             <span>Furnished</span>
                         </div>
                     </div>
                     <div className='flex gap-6 flex-wrap'>
                         <div className='flex items-center gap-2'>
-                            <input 
-                                type='number' 
-                                id='bedrooms' 
-                                min='1' 
-                                max='10' 
-                                required 
-                                className='p-3 border border-gray-300 rounded-lg' 
-                                onChange={handleChange} 
+                            <input
+                                type='number'
+                                id='bedrooms'
+                                min='1'
+                                max='10'
+                                required
+                                className='p-3 border border-gray-300 rounded-lg'
+                                onChange={handleChange}
                                 value={formData.bedrooms} />
                             <span>Beds</span>
                         </div>
                         <div className='flex items-center gap-2'>
-                            <input 
-                                type='number' 
-                                id='bathrooms' 
-                                min='1' 
-                                max='10' 
-                                required 
-                                className='p-3 border border-gray-300 rounded-lg' 
-                                onChange={handleChange} 
+                            <input
+                                type='number'
+                                id='bathrooms'
+                                min='1'
+                                max='10'
+                                required
+                                className='p-3 border border-gray-300 rounded-lg'
+                                onChange={handleChange}
                                 value={formData.bathrooms} />
                             <span>Baths</span>
                         </div>
                         <div className='flex items-center gap-2 w-full'>
-                            <input 
-                                type='number' 
-                                id='regularPrice' 
-                                min='1' 
-                                max='10000000' 
-                                required 
-                                className='p-3 border border-gray-300 rounded-lg max-w-25' 
-                                onChange={handleChange} 
+                            <input
+                                type='number'
+                                id='regularPrice'
+                                min='1'
+                                max='10000000'
+                                required
+                                className='p-3 border border-gray-300 rounded-lg max-w-25'
+                                onChange={handleChange}
                                 value={formData.regularPrice} />
                             <div className='flex flex-col items-center'>
                                 <span>Price</span>
@@ -295,51 +296,52 @@ export default function UpdateListing() {
                     </span>
                     <div className='sm:flex gap-4 max-w-full'>
                         <DragDropFiles files={files} setFiles={setFiles} />
-                        <button 
-                            type='button' 
-                            onClick={handleImageSubmit} 
-                            disabled={uploading} 
+                        <button
+                            type='button'
+                            onClick={handleImageSubmit}
+                            disabled={uploading}
                             className='mt-3 sm:mt-0 p-3 max-h-16 text-green-700 
                             font-semibold border border-green-700 rounded-lg 
-                            uppercase hover:shadow-lg disabled:opacity-80'>
+                            uppercase hover:shadow-lg hover:text-white 
+                            hover:bg-green-700 disabled:opacity-80'>
                             {uploading ? 'Uploading...' : 'Upload'}
                         </button>
                     </div>
                     <p className='text-sm self-center'>
-                        {imageUploadError &&  (
+                        {imageUploadError && (
                             <span className='text-red-700 text-sm'>
                                 {imageUploadError}
                             </span>)}
                     </p>
                     {
-                        formData.imageURLs.length > 0 && 
+                        formData.imageURLs.length > 0 &&
                         formData.imageURLs.map((url, index) => (
-                            <div 
-                                key={url} 
+                            <div
+                                key={url}
                                 className='flex justify-between p-3 border 
                                 items-center bg-slate-100'>
-                                <img 
-                                    src={url} 
-                                    alt='listing image' 
+                                <img
+                                    src={url}
+                                    alt='listing image'
                                     className='w-20 h-20 object-contain rounded-lg' />
                                 <span className='line-clamp-2 px-3'>
                                     {extractFileNameFromURL(url)}
                                 </span>
-                                <button 
-                                    type='button' 
-                                    onClick={() => handleRemoveImage(index)} 
+                                <button
+                                    type='button'
+                                    onClick={() => handleRemoveImage(index)}
                                     className='p-3 hover:opacity-75'>
-                                    <TiDeleteOutline 
-                                    className='text-red-700 h-6 w-auto' />
+                                    <TiDeleteOutline
+                                        className='text-red-700 h-6 w-auto' />
                                 </button>
                             </div>
                         ))
                     }
-                    <button 
-                        disabled={submitLoading || uploading} 
+                    <button
+                        disabled={submitLoading || uploading}
                         className='p-3 bg-slate-700 text-white rounded-lg 
                         uppercase hover:opacity-95 disabled:opacity-80'>
-                            {submitLoading ? 'Updating...' : 'Update Listing'}
+                        {submitLoading ? 'Updating...' : 'Update Listing'}
                     </button>
                     {error && <p className='text-red-700 text-sm'>{error}</p>}
                 </div>
