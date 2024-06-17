@@ -11,6 +11,7 @@ import UpdateListing from './pages/UpdateListing';
 import Listing from './pages/Listing';
 import Search from './pages/Search';
 import UserListings from './pages/UserListings';
+import ConfirmEmail from './pages/ConfirmEmail';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/verify/:emailToken' element={<ConfirmEmail />} />
         <Route path='/sign-in' element={<SignIn />} />
         <Route path='/listing/:listingId' element={<Listing />} />
         <Route path='/user/:userId' element={<UserListings />} />

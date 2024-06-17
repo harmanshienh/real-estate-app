@@ -2,14 +2,81 @@ import User from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from '../utils/error.js';
 import jwt from 'jsonwebtoken';
+import emailTransporter from '../utils/emailTransporter.js';
 
 export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
-    const hashedPassword = bcryptjs.hashSync(password, 10);
-    const newUser = new User({ username, email, password:hashedPassword });
+
     try {
+        const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+        if (existingUser) {
+            return res.status(400).json({ 
+                success: false, 
+                message: 'Username or email already exists' 
+            });
+        }
+
+        const hashedPassword = bcryptjs.hashSync(password, 10);
+        const newUser = new User({ username, email, password: hashedPassword });
+
         await newUser.save();
-        res.status(201).json('User created successfully!');
+
+        jwt.sign(
+            { id: newUser._id },
+            process.env.EMAIL_SECRET,
+            { expiresIn: '1d' },
+            async (err, emailToken) => {
+                if (err) {
+                    return res.status(500)
+                    .json({ 
+                        success: false, 
+                        message: 'Error creating email verification token' 
+                    });
+                }
+                const url = `${process.env.CLIENT_URL}/verify/${emailToken}`;
+
+                try {
+                    await emailTransporter.sendMail({
+                        to: newUser.email,
+                        subject: 'Confirm Email',
+                        html: `Verify your account through the following link:
+                        <a href="${url}">Verify your account</a>`,
+                    });
+                    res.status(201).json({ 
+                        success: true, 
+                        message: `An email has been sent to ${newUser.email}. You have 24 hours to verify your account`,
+                        token: emailToken
+                    });
+                } catch (emailError) {
+                    return res.status(500).json({ 
+                        success: false, 
+                        message: 'Error sending email', 
+                        error: emailError.message 
+                    });
+                }
+            }
+        );
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const confirmUser = async (req, res, next) => {
+    try {
+        const { id } = jwt.verify(req.params.emailToken, process.env.EMAIL_SECRET);
+        const updatedUser = await User.findByIdAndUpdate(id, {
+            $set: {
+                verified: true
+            },
+        }, { new: true })
+        if (updatedUser) {
+            return res.status(200).json({ 
+                message: 'User confirmed successfully.', 
+                updated: updatedUser 
+            });
+        } else {
+            return res.status(404).json({ message: 'User not found.' });
+        }
     } catch (error) {
         next(error);
     }
@@ -20,7 +87,8 @@ export const signin = async (req, res, next) => {
 
     try {
         const validUser = await User.findOne({
-            $or: [{ email: emailOrUsername }, { username: emailOrUsername }]
+            $or: [{ email: emailOrUsername, verified: true }, 
+                  { username: emailOrUsername, verified: true }]
           });
         if (!validUser) {
             return next(errorHandler(404, 'User not found'));

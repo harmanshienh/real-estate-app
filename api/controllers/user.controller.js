@@ -93,7 +93,8 @@ export const getUsers = async (req, res, next) => {
         const order = req.query.order || 'desc';
 
         const users = await User.find({
-            username: { $regex: searchTerm, $options: 'i'}
+            username: { $regex: searchTerm, $options: 'i'},
+            verified: true
         }).sort(
             {[sort]: order}
         ).limit(limit).skip(startIndex);

@@ -1,6 +1,7 @@
 import express from 'express';
 import { 
-    signup, 
+    signup,
+    confirmUser, 
     signin, 
     google, 
     signout 
@@ -9,6 +10,7 @@ import {
 const router = express.Router();
 
 router.post("/signup", signup);
+router.get("/confirmation/:emailToken", confirmUser);
 router.post("/signin", signin);
 router.post("/google", google);
 router.get("/signout", signout); 

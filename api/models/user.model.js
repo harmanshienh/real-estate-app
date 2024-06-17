@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://tse1.mm.bing.net/th?q=instagram%20blank%20pfp"
     },
+    verified: {
+        type: Boolean,
+        default: false
+    }
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);

@@ -8,6 +8,7 @@ import { FaEyeSlash } from "react-icons/fa6";
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -18,6 +19,7 @@ export default function SignUp() {
       [e.target.id]: e.target.value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -30,21 +32,25 @@ export default function SignUp() {
           },
           body: JSON.stringify(formData),
         });
+
       const data = await res.json();
+
       if (data.success === false) {
         setError(data.message);
         setLoading(false);
         return;
       }
+
       setLoading(false);
       setError(null);
-      navigate('/sign-in');
+      setMessage(data.message);
+
     } catch (error) {
         setLoading(false);
         setError(error.message);
     }
-  
   }
+
   return (
     <div className='p-3 max-w-lg mx-auto'>
       <h1 className='text-3xl text-center font-semibold my-7'>Sign Up</h1>
@@ -93,6 +99,7 @@ export default function SignUp() {
         </Link>
       </div>
       {error && <p className='text-red-500 mt-5'>{error}</p>}
+      {message && <p className='text-green-500 mt-5'>{message}</p>}
     </div>
   );
 }
